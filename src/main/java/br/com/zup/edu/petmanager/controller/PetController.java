@@ -2,6 +2,7 @@ package br.com.zup.edu.petmanager.controller;
 
 import java.net.URI;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public class PetController {
         this.petRepository = petRepository;
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid PetDTO petDTO,
                                        UriComponentsBuilder ucb) {
@@ -41,6 +43,7 @@ public class PetController {
         return ResponseEntity.created(location).build();
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Pet pet = petRepository.findById(id)
