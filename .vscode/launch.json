@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-PetmanagerApplication<petmanager>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "br.com.zup.edu.petmanager.PetmanagerApplication",
+      "projectName": "petmanager",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
