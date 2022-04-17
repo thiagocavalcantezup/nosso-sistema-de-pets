@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.edu.petmanager.model.Pet;
 import br.com.zup.edu.petmanager.model.PetDTO;
+import br.com.zup.edu.petmanager.model.PetResponseDTO;
 import br.com.zup.edu.petmanager.repository.PetRepository;
 
 @RestController
@@ -56,6 +58,18 @@ public class PetController {
         petRepository.delete(pet);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PetResponseDTO> show(@PathVariable Long id) {
+        Pet pet = petRepository.findById(id)
+                               .orElseThrow(
+                                   () -> new ResponseStatusException(
+                                       HttpStatus.NOT_FOUND, "Não existe um pet com o id informado."
+                                   )
+                               );
+
+        return ResponseEntity.ok(new PetResponseDTO(pet));
     }
 
 }
