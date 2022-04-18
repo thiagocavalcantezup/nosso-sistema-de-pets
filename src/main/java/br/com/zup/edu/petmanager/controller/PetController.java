@@ -1,10 +1,16 @@
 package br.com.zup.edu.petmanager.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.edu.petmanager.model.Pet;
 import br.com.zup.edu.petmanager.model.PetDTO;
+import br.com.zup.edu.petmanager.model.PetIndexResponseDTO;
 import br.com.zup.edu.petmanager.model.PetResponseDTO;
 import br.com.zup.edu.petmanager.repository.PetRepository;
 
@@ -70,6 +77,17 @@ public class PetController {
                                );
 
         return ResponseEntity.ok(new PetResponseDTO(pet));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> index(@PageableDefault(size = 2, page = 0, sort = "id", direction = Direction.ASC) Pageable paginacao) {
+        Page<Pet> petsPage = petRepository.findAll(paginacao);
+        List<PetIndexResponseDTO> petResponses = petsPage.map(PetIndexResponseDTO::new).toList();
+        PageImpl<PetIndexResponseDTO> petsPageImpl = new PageImpl<>(
+            petResponses, paginacao, petsPage.getTotalElements()
+        );
+
+        return ResponseEntity.ok(petsPageImpl);
     }
 
 }

@@ -63,4 +63,8 @@ public class Pet {
         return tipo;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
 }
